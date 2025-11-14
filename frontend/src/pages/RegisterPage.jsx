@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
+import { useState } from "react";
 
 export const RegisterPage = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const { formState, handleChange, handleReset } = useForm({
     username: "",
     email: "",
@@ -14,7 +15,7 @@ export const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:3000/api/register", {
         method: "POST",
@@ -26,14 +27,17 @@ export const RegisterPage = () => {
       });
 
       if (res.ok) {
-        alert("¡Registro exitoso! Puedes iniciar sesión.");
+        alert("¡Registro exitoso! puedes iniciar sesion con tu cuentra creada");
         navigate("/login");
       } else {
-        alert("Error al registrarse");
+        alert("Credenciales incorrectas");
+        console.log( error);
         handleReset();
       }
     } catch (e) {
       console.error("Error: ", e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,6 +47,13 @@ export const RegisterPage = () => {
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Crear Cuenta
         </h2>
+
+        {/* TODO: Mostrar este div cuando haya error */}
+        <div className="hidden bg-red-100 text-red-700 p-3 rounded mb-4">
+          <p className="text-sm">
+            Error al crear la cuenta. Intenta nuevamente.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -56,11 +67,11 @@ export const RegisterPage = () => {
               type="text"
               id="username"
               name="username"
+              onChange={handleChange}
               placeholder="Elige un nombre de usuario"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              disabled={loading}
               required
-              value={formState.username}
-              onChange={handleChange}
             />
           </div>
 
@@ -75,11 +86,11 @@ export const RegisterPage = () => {
               type="email"
               id="email"
               name="email"
+              onChange={handleChange}
               placeholder="tu@email.com"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              disabled={loading}
               required
-              value={formState.email}
-              onChange={handleChange}
             />
           </div>
 
@@ -94,11 +105,11 @@ export const RegisterPage = () => {
               type="password"
               id="password"
               name="password"
+              onChange={handleChange}
               placeholder="Crea una contraseña segura"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              disabled={loading}
               required
-              value={formState.password}
-              onChange={handleChange}
             />
           </div>
 
@@ -113,11 +124,11 @@ export const RegisterPage = () => {
               type="text"
               id="name"
               name="name"
+              onChange={handleChange}
               placeholder="Tu nombre"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              disabled={loading}
               required
-              value={formState.name}
-              onChange={handleChange}
             />
           </div>
 
@@ -132,19 +143,20 @@ export const RegisterPage = () => {
               type="text"
               id="lastname"
               name="lastname"
+              onChange={handleChange}
               placeholder="Tu apellido"
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              disabled={loading}
               required
-              value={formState.lastname}
-              onChange={handleChange}
             />
           </div>
 
           <button
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded transition-colors"
+            disabled={loading}
           >
-            Registrarse
+            {loading ? "Registrandose..." : "Registrarse"}
           </button>
         </form>
 
