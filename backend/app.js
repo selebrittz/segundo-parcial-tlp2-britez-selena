@@ -14,7 +14,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5174",
     credentials: true,
   })
 );
@@ -26,5 +26,5 @@ app.use("/api", superheroRoutes);
 
 app.listen(PORT, async () => {
   await connectDB();
-  console.log(`servidor corriendo en el puerto ${PORT}`);
+  console.log(`servidor corriendo en el puerto http://localhost:${PORT}`);
 });

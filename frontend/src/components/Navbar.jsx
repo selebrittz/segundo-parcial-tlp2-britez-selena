@@ -1,4 +1,5 @@
 export const Navbar = () => {
+  
   // TODO: Obtener datos del usuario desde /api/profile
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
